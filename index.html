@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#003f49">
+  <title>Cannalogic</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #003f49;
+    }
+
+    .gate {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: hidden;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      pointer-events: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <a class="gate" href="https://www.cannalogic.in/" aria-label="Enter Cannalogic">
+
+    <video
+      id="backgroundVideo"
+      autoplay
+      muted
+      loop
+      playsinline
+      webkit-playsinline
+      preload="auto"
+      disablepictureinpicture
+    ></video>
+
+  </a>
+
+  <script>
+    const video = document.getElementById("backgroundVideo");
+
+    const mobileVideo =
+      "https://res.cloudinary.com/dzboz4mwb/video/upload/v1795631821/CLG-GATE-MOB_1_diroyz.mp4";
+
+    const desktopVideo =
+      "https://res.cloudinary.com/dzboz4mwb/video/upload/v1795631823/CLG-GATE-DESK_1_uthb3b.mp4";
+
+    const screenQuery = window.matchMedia("(max-width: 767px)");
+
+    function loadVideo() {
+      const selectedVideo = screenQuery.matches
+        ? mobileVideo
+        : desktopVideo;
+
+      if (video.dataset.currentVideo === selectedVideo) return;
+
+      video.dataset.currentVideo = selectedVideo;
+      video.src = selectedVideo;
+      video.load();
+
+      video.play().catch(() => {});
+    }
+
+    loadVideo();
+
+    screenQuery.addEventListener("change", loadVideo);
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        video.pause();
+      } else {
+        video.play().catch(() => {});
+      }
+    });
+  </script>
+
+</body>
+</html>
